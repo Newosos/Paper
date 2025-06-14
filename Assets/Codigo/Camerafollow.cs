@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+//platano
+
 public class Camerafollow : MonoBehaviour
 {
     [SerializeField] Transform player;

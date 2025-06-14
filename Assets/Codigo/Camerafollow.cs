@@ -1,0 +1,34 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Camerafollow : MonoBehaviour
+{
+    [SerializeField] Transform player;
+    [SerializeField] float timeoffset;
+    [SerializeField] Vector3 offsetPos;
+    [SerializeField] Vector3 boundsMin;
+    [SerializeField] Vector3 boundsMax;
+
+    private void LateUpdate()
+    {
+        if (player != null)
+        {
+            Vector3 startPos = transform.position;
+            Vector3 targetPos = player.position;
+
+            targetPos.x += offsetPos.x;
+            targetPos.y += offsetPos.y;
+            targetPos.z += offsetPos.z;
+
+            targetPos.x = Mathf.Clamp(targetPos.x, boundsMin.x, boundsMax.x);
+            targetPos.y = Mathf.Clamp(targetPos.y, boundsMin.y, boundsMax.y);
+
+            float tx = 1f - Mathf.Lerp(startPos.x, targetPos.x, timeoffset);
+            float ty = 1f - Mathf.Lerp(startPos.y, targetPos.y, timeoffset);
+            
+
+
+        }
+    }
+}

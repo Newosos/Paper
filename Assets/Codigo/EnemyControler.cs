@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class EnemyController : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class EnemyController : MonoBehaviour
     public int contactDamage = 1;
 
     //Start is called before the first frame update 
-    void start
+    private void Start()
     {
         currentHealt = maxHealt;
     }
@@ -27,7 +28,7 @@ public class EnemyController : MonoBehaviour
         if (isInvicible)
         {
             currentHealt -= damage;
-            MathF.Clamp(currentHealt, 0, maxHealt);
+            Mathf.Clamp(currentHealt, 0, maxHealt);
             if (currentHealt <= 0)
             {
                 Defeat();
@@ -37,7 +38,7 @@ public class EnemyController : MonoBehaviour
 
     void Defeat()
     {
-        Destroy(GameObject);
+        Destroy(gameObject);
     }
 
     private void OntriggerStay2D(Collider2D other)

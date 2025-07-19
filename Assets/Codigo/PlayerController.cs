@@ -9,7 +9,10 @@ public class PlayerController : MonoBehaviour
     BoxCollider2D box2d;
     Rigidbody2D rb2d;
 
-
+    Vector3 box2d_origin;
+    
+    private bool isGrounded;
+    private bool isFacingRigth;
     [SerializeField] float movespeed = 3f;
     [SerializeField] float jumpSpeed = 3f;
 
@@ -27,6 +30,8 @@ public class PlayerController : MonoBehaviour
         //El sprite mira a la derecha por default
         isFacingRigth = true;
     }
+    
+    
     private void FixedUpdate()
     {
         isGrounded = false;
@@ -61,7 +66,7 @@ public class PlayerController : MonoBehaviour
     {
         keyHorizontal = Input.GetAxisRaw("Horizontal");
         keyJump = Input.GetKeyDown(KeyCode.Space);
-        keyShoot = Input.GetKey(KeyCode.C);
+        bool keyShoot = Input.GetKey(KeyCode.C);
 
         if(keyHorizontal < 0)
         {

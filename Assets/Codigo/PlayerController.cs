@@ -16,9 +16,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float movespeed = 3f;
     [SerializeField] float jumpSpeed = 3f;
 
+
     float keyHorizontal;
     bool keyJump;
-
+    bool keySlash;
+    bool keyDash;
+    bool isSlashing;
+    
+                                                                     
     //start se llama antes del primer frame update
 
     void Start()
@@ -66,8 +71,7 @@ public class PlayerController : MonoBehaviour
     {
         keyHorizontal = Input.GetAxisRaw("Horizontal");
         keyJump = Input.GetKeyDown(KeyCode.Space);
-        bool keyShoot = Input.GetKey(KeyCode.C);
-
+        keyDash = Input.GetKeyDown(KeyCode.Q);
         if(keyHorizontal < 0)
         {
             if (isFacingRigth)
@@ -76,30 +80,30 @@ public class PlayerController : MonoBehaviour
             }
             if(isGrounded)
             {
-                animator.Play("Player_Run");
+                animator.Play("Player run");
             }
           
             rb2d.velocity = new Vector2(-movespeed, rb2d.velocity.y);
         }
         else if (keyHorizontal >0)
         {
-            if (isFacingRigth)
+            if (!isFacingRigth)
             {
                 Flip();
             }
             if (isGrounded)
             {
-                animator.Play("Player_Run");
+                animator.Play("Player run");
             }
 
-            animator.Play("Player_Run");
+            animator.Play("Player run");
             rb2d.velocity = new Vector2(movespeed, rb2d.velocity.y);
         }
         else
         {
             if (isGrounded)
             {
-                animator.Play("Player_idle");
+                animator.Play("Player idle");
              }
  
             
@@ -108,15 +112,15 @@ public class PlayerController : MonoBehaviour
        
         if (keyJump && isGrounded)
         {
-            animator.Play("Player_Jump");
+            animator.Play("Player jump");
             rb2d.velocity = new Vector2(rb2d.velocity.x, jumpSpeed);
         }
 
         if(!isGrounded)
         {
-            animator.Play("Player_Jump");
+            animator.Play("Player jump");
         }
-            
+
     }
     void Flip()
     {

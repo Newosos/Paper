@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     BoxCollider2D box2d;
     Rigidbody2D rb2d;
 
-    Vector3 box2d_origin;
+    Vector3 box2d_origin; // x,y,z // 0,0,0
     
     private bool isGrounded;
     private bool isFacingRigth;
@@ -23,7 +23,6 @@ public class PlayerController : MonoBehaviour
     bool keyDash;
     bool isSlashing;
     
-                                                                     
     //start se llama antes del primer frame update
 
     void Start()
@@ -60,9 +59,9 @@ public class PlayerController : MonoBehaviour
         // draw debug lines
 
         raycastColor = (isGrounded) ? Color.green : Color.red;
-        Debug.DrawRay(box2d_origin + new Vector3(box2d.bounds.extents.x, 0), Vector2.down * (box2d.bounds.extents.y / 4f + raycastDistance), raycastColor);
-        Debug.DrawRay(box2d_origin - new Vector3(box2d.bounds.extents.x, 0), Vector2.down * (box2d.bounds.extents.y / 4f + raycastDistance), raycastColor);
-        Debug.DrawRay(box2d_origin - new Vector3(box2d.bounds.extents.x, box2d.bounds.extents.y / 4f + raycastDistance), Vector2.right * (box2d.bounds.extents.x * 2), raycastColor);
+        Debug.DrawRay(box_origin + new Vector2(box2d.bounds.extents.x, 0), Vector2.down * (box2d.bounds.extents.y / 4f + raycastDistance), raycastColor);
+        Debug.DrawRay(box_origin - new Vector2(box2d.bounds.extents.x, 0), Vector2.down * (box2d.bounds.extents.y / 4f + raycastDistance), raycastColor);
+        Debug.DrawRay(box_origin - new Vector2(box2d.bounds.extents.x, box2d.bounds.extents.y / 4f + raycastDistance), Vector2.right * (box2d.bounds.extents.x * 2), raycastColor);
     }
 
     //Update se da una vez por cuadro 
@@ -96,7 +95,7 @@ public class PlayerController : MonoBehaviour
                 animator.Play("Player run");
             }
 
-            animator.Play("Player run");
+            //animator.Play("Player run");
             rb2d.velocity = new Vector2(movespeed, rb2d.velocity.y);
         }
         else
@@ -104,7 +103,7 @@ public class PlayerController : MonoBehaviour
             if (isGrounded)
             {
                 animator.Play("Player idle");
-             }
+            }
  
             
             rb2d.velocity = new Vector2(0f, rb2d.velocity.y);

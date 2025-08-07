@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
     float keyHorizontal;
     bool keyJump;
     bool keySlash;
-    bool keyDash;
+    //bool keyDash;
     bool isSlashing;
     
     //start se llama antes del primer frame update
@@ -70,7 +70,9 @@ public class PlayerController : MonoBehaviour
     {
         keyHorizontal = Input.GetAxisRaw("Horizontal");
         keyJump = Input.GetKeyDown(KeyCode.Space);
-        keyDash = Input.GetKeyDown(KeyCode.Q);
+       // keyDash = Input.GetKeyDown(KeyCode.Q);
+        isSlashing = keySlash;
+
         if(keyHorizontal < 0)
         {
             if (isFacingRigth)
@@ -79,7 +81,17 @@ public class PlayerController : MonoBehaviour
             }
             if(isGrounded)
             {
-                animator.Play("Player run");
+                if (isSlashing)
+                {
+                    animator.Play("Player runslash");
+                }
+                
+                else
+                {
+                    animator.Play("Player run");
+                }
+             
+                
             }
           
             rb2d.velocity = new Vector2(-movespeed, rb2d.velocity.y);
@@ -92,17 +104,33 @@ public class PlayerController : MonoBehaviour
             }
             if (isGrounded)
             {
-                animator.Play("Player run");
-            }
+                if (isSlashing)
+                {
+                    animator.Play("Player runslash");
+                }
 
-            //animator.Play("Player run");
+                else
+                {
+                    animator.Play("Player run");
+                }
+
+            }
+                        
             rb2d.velocity = new Vector2(movespeed, rb2d.velocity.y);
         }
         else
         {
             if (isGrounded)
             {
-                animator.Play("Player idle");
+                if (isSlashing)
+                {
+                    animator.Play("Player slash");
+                }
+                else
+                {
+                    animator.Play("Player idle");
+                }
+                
             }
  
             
@@ -110,14 +138,29 @@ public class PlayerController : MonoBehaviour
         }
        
         if (keyJump && isGrounded)
-        {
-            animator.Play("Player jump");
-            rb2d.velocity = new Vector2(rb2d.velocity.x, jumpSpeed);
-        }
 
-        if(!isGrounded)
+            if (isSlashing)
+            {
+                animator.Play("Player jumpslash");
+            }
+            else
+            {
+           animator.Play("Player jump");
+            
+            }
+        rb2d.velocity = new Vector2(rb2d.velocity.x, jumpSpeed);
+
+        if (!isGrounded)
         {
-            animator.Play("Player jump");
+            if (isSlashing)
+            {
+                animator.Play("Player jumpslash");
+            }
+            else
+            {
+              animator.Play("Player jump");
+
+            }
         }
 
     }
@@ -127,7 +170,3 @@ public class PlayerController : MonoBehaviour
         transform.Rotate(0f, 180f, 0f);
     }
 }
-
-
-
-

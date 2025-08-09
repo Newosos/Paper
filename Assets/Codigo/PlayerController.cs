@@ -66,53 +66,49 @@ public class PlayerController : MonoBehaviour
 
     //Update se da una vez por cuadro 
 
-    void Update()
+    void Update() // Se ejecuta cada frame
     {
-        keyHorizontal = Input.GetAxisRaw("Horizontal");
+        keyHorizontal = Input.GetAxisRaw("Horizontal"); // keyHorizontal esta revisando si estas presionando la A o la D, y segun la que presiones te da un 1 o un -1
         keyJump = Input.GetKeyDown(KeyCode.Space);
        // keyDash = Input.GetKeyDown(KeyCode.Q);
+        keySlash = Input.GetKeyDown(KeyCode.C); // keySlash es verdadero si se presiona la tecla C
         isSlashing = keySlash;
 
-        if(keyHorizontal < 0)
-        {
+        
+
+        if(keyHorizontal < 0) // Si se presiona la tecla izquierda A o la flecha izquierda
+        { // keyHorizontal = -1
             if (isFacingRigth)
             {
                 Flip();
             }
-            if(isGrounded)
+            if(isGrounded) // Y si estas en el suelo
             {
-                if (isSlashing)
+                
+                
+                if (isSlashing) // Y si estas atacando
                 {
                     animator.Play("Player runslash");
                 }
-                
-                else
-                {
-                    animator.Play("Player run");
-                }
-             
                 
             }
           
             rb2d.velocity = new Vector2(-movespeed, rb2d.velocity.y);
         }
-        else if (keyHorizontal >0)
-        {
+        else if (keyHorizontal > 0) // Si estas caminando a la derecha, presionando la tecla D o la flecha derecha
+        { // keyHorizontal = 1
             if (!isFacingRigth)
             {
                 Flip();
             }
-            if (isGrounded)
+            if (isGrounded) // Y estas en el suelo
             {
-                if (isSlashing)
+
+                if (isSlashing) // Y si estas atacando
                 {
                     animator.Play("Player runslash");
                 }
-
-                else
-                {
-                    animator.Play("Player run");
-                }
+               
 
             }
                         
@@ -120,37 +116,38 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            if (isGrounded)
+            if (isGrounded) // Si estas en el suelo
             {
-                if (isSlashing)
+                if (isSlashing) // Y presionas la tecla C
                 {
-                    animator.Play("Player slash");
+                    animator.Play("Player slash"); // Animacion de ataque
+                    Debug.Log("Slash");
                 }
-                else
-                {
-                    animator.Play("Player idle");
-                }
-                
             }
  
             
             rb2d.velocity = new Vector2(0f, rb2d.velocity.y);
         }
-       
-        if (keyJump && isGrounded)
+        
+        
+        if(isGrounded) // Si estoy en el suelo
+            animator.SetInteger("Running",(int)keyHorizontal); // Animacion de correr
 
-            if (isSlashing)
+        if (keyJump && isGrounded) // Si presionas la tecla de salto y estas en el suelo
+        {
+            if (isSlashing) // Si esta atacando
             {
-                animator.Play("Player jumpslash");
+                animator.Play("Player jumpslash"); // Animacion de ataque en el aire
             }
-            else
+            else // Si no
             {
-           animator.Play("Player jump");
-            
+                animator.Play("Player jump"); // Animacion de ataque normal
             }
-        rb2d.velocity = new Vector2(rb2d.velocity.x, jumpSpeed);
 
-        if (!isGrounded)
+            rb2d.velocity = new Vector2(rb2d.velocity.x, jumpSpeed); // Esta linea te mueve la velocidad en y segun el jumpSpeed
+        }
+
+        if (!isGrounded) // Si no estas en el suelo
         {
             if (isSlashing)
             {

@@ -855,7 +855,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_Sprite: {fileID: 1046696589, guid: 68edd251aa897fd4b8746fe60b2a187c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 0.34, y: 0.39}
@@ -863,7 +863,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!4 &1983988138
 Transform:
   m_ObjectHideFlags: 0
@@ -891,6 +891,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 787dd2941540a9243985219166fe993c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isFacingRigth: 0
+  movespeed: 3
+  jumpSpeed: 3
+  distanceSlashDamage: 1
+  distanceSlashSpeed: 5
+  distanceslashPos: {fileID: 0}
+  distanceSlashPrefab: {fileID: 0}
 --- !u!1001 &5700097433230257903
 PrefabInstance:
   m_ObjectHideFlags: 0

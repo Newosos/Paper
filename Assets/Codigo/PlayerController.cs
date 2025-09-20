@@ -2,19 +2,17 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Windows;
 
-/*public class PlayerController : MonoBehaviour
-
+public class PlayerController : MonoBehaviour
 {
     Animator animator;
     BoxCollider2D box2d;
     Rigidbody2D rb2d;
 
     Vector3 box2d_origin; // x,y,z // 0,0,0
-    
+
     private bool isGrounded;
-    private bool isFacingRigth;
+    [SerializeField] private bool isFacingRigth;
     [SerializeField] float movespeed = 3f;
     [SerializeField] float jumpSpeed = 3f;
 
@@ -74,21 +72,8 @@ using UnityEngine.Windows;
 
     //Update se da una vez por cuadro 
 
-    void Update()
-    {
-       // PlayerDirectioninput();
-        PlayerJumpinput();
-        PlayerDistanceslashinput();
-      //  PlayerMovement();
-
-
-
-    }
-
     void PlayerJumpinput()
     {
-        //get keyboard input
-        keyHorizontal = input.GetAxisRaw("Horizontal");
         
     }
 
@@ -99,19 +84,19 @@ using UnityEngine.Windows;
         //throw new NotImplementedException();
 
         //get keyboard input
-        keyDistanceslash = input.GetKey(KeyCode.V);
+        keyDistanceslash = Input.GetKey(KeyCode.V);
 
         //Shoot key is being pressed and key release flag true 
 
-        if (keyDistanceslash && keyDistanceslashRelease)
-        {
-            isDistanceslashing = true;
-            keyDistanceslashRelease = false;
-            distanceslashTime = Time.time;
+        //if (keyDistanceslash && keyDistanceslashReleaseTime)
+        //{
+        //    isDistanceslashing = true;
+        //    keyDistanceslashRelease = false;
+        //    distanceslashTime = Time.time;
 
-            //shot distanceslash
-            Debug.Log("distance slash fly");
-        }
+        //    //shot distanceslash
+        //    Debug.Log("distance slash fly");
+        //}
 
         //shoot key isn't being pressed and release flag is false 
     }
@@ -119,6 +104,9 @@ using UnityEngine.Windows;
   
     void Update() // Se ejecuta cada frame
     {
+        PlayerJumpinput();
+        PlayerDistanceslashinput();
+
         keyHorizontal = Input.GetAxisRaw("Horizontal"); // keyHorizontal esta revisando si estas presionando la A o la D, y segun la que presiones te da un 1 o un -1
         keyJump = Input.GetKeyDown(KeyCode.Space);
        // keyDash = Input.GetKeyDown(KeyCode.Q);
@@ -218,4 +206,3 @@ using UnityEngine.Windows;
         transform.Rotate(0f, 180f, 0f);
     }
 }
-*/

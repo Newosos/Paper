@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class ZigZagEnemy : MonoBehaviour
@@ -41,5 +40,19 @@ public class ZigZagEnemy : MonoBehaviour
 
         // Mover enemigo
         transform.position += move + zigzagOffset * Time.deltaTime;
+
+        //Agregar un area de detección y el enemigo no te debe perseguir hasta que te detecte.
+        // Esto puede ser con un circle o por un trigger de area
+
+        //Cuando lo golpees debe tener una reacción ya sea por animación.
+        // Con el transform o rigidbody lo empujar en x hacia el lado contrario y activas animacion
+        //if(isFacingRight)
+        //transform.position += new Vector3(4,) ESTO ES UN EJEMPLO, NO LO USES, HAZLO TU, PERO POR AHI VA...
+
+        //Cuando golpea al jugador también debe tener una animación o reacción.
+        // Cuando llega a estar cerca de el jugador debe tener una animacion de ataque ya sea que solo se incline o si tenga mas movimiento. y al golpear, este debe retroceder un poco, se puede mover
+        // con transforms o rigidbody y debe regresar a su animacion normal
+
+
     }
 }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class EnemyController : MonoBehaviour
+/*public class EnemyController : MonoBehaviour
 {
     bool isInvicible;
 
@@ -50,3 +50,4 @@ public class EnemyController : MonoBehaviour
     }
 
 }
+*/

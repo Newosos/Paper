@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Windows;
 
-public class PlayerController : MonoBehaviour
+/*public class PlayerController : MonoBehaviour
 
 {
     Animator animator;
@@ -16,10 +18,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float movespeed = 3f;
     [SerializeField] float jumpSpeed = 3f;
 
+    [SerializeField] int distanceSlashDamage = 1;
+    [SerializeField] float distanceSlashSpeed = 5f;
+    [SerializeField] Transform distanceslashPos;
+    [SerializeField] GameObject distanceSlashPrefab;
+
 
     float keyHorizontal;
     bool keyJump;
     bool keySlash;
+    bool keyDistanceslash;
     //bool keyDash;
     bool isSlashing;
     
@@ -66,6 +74,49 @@ public class PlayerController : MonoBehaviour
 
     //Update se da una vez por cuadro 
 
+    void Update()
+    {
+       // PlayerDirectioninput();
+        PlayerJumpinput();
+        PlayerDistanceslashinput();
+      //  PlayerMovement();
+
+
+
+    }
+
+    void PlayerJumpinput()
+    {
+        //get keyboard input
+        keyHorizontal = input.GetAxisRaw("Horizontal");
+        
+    }
+
+    void PlayerDistanceslashinput()
+    {
+        float distanceslashTimeLength = 0;
+        float keyDistanceslashReleaseTime = 0;
+        //throw new NotImplementedException();
+
+        //get keyboard input
+        keyDistanceslash = input.GetKey(KeyCode.V);
+
+        //Shoot key is being pressed and key release flag true 
+
+        if (keyDistanceslash && keyDistanceslashRelease)
+        {
+            isDistanceslashing = true;
+            keyDistanceslashRelease = false;
+            distanceslashTime = Time.time;
+
+            //shot distanceslash
+            Debug.Log("distance slash fly");
+        }
+
+        //shoot key isn't being pressed and release flag is false 
+    }
+
+  
     void Update() // Se ejecuta cada frame
     {
         keyHorizontal = Input.GetAxisRaw("Horizontal"); // keyHorizontal esta revisando si estas presionando la A o la D, y segun la que presiones te da un 1 o un -1
@@ -167,3 +218,4 @@ public class PlayerController : MonoBehaviour
         transform.Rotate(0f, 180f, 0f);
     }
 }
+*/

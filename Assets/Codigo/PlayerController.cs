@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,200 +8,214 @@ public class PlayerController : MonoBehaviour
     BoxCollider2D box2d;
     Rigidbody2D rb2d;
 
-    Vector3 box2d_origin; // x,y,z // 0,0,0
+    [Header("Movimiento")]
+    [SerializeField] float moveSpeed = 5f;
+    [SerializeField] float jumpSpeed = 8f;
+    [SerializeField] int maxJumps = 2;
+    private int jumpCount;
+
+    [Header("Dash")]
+    [SerializeField] float dashSpeed = 12f;
+    [SerializeField] float dashDuration = 0.2f;
+    [SerializeField] float dashCooldown = 0.5f;
+    private bool isDashing;
+    private float lastDashTime;
+
+    [Header("Ataques")]
+    [SerializeField] Transform swordHitbox;
+    [SerializeField] float swordRange = 0.5f;
+    [SerializeField] LayerMask enemyLayers;
+    [SerializeField] Transform distanceSlashPos;
+    [SerializeField] GameObject distanceSlashPrefab;
+    [SerializeField] float distanceSlashSpeed = 8f;
+
+    [Header("Wall Jump")]
+    [SerializeField] float wallSlideSpeed = 1.5f;
+    [SerializeField] float wallJumpForce = 8f;
+    [SerializeField] LayerMask wallLayer;
+    private bool isTouchingWall;
+    private bool isWallSliding;
 
     private bool isGrounded;
-    [SerializeField] private bool isFacingRigth;
-    [SerializeField] float movespeed = 3f;
-    [SerializeField] float jumpSpeed = 3f;
-
-    [SerializeField] int distanceSlashDamage = 1;
-    [SerializeField] float distanceSlashSpeed = 5f;
-    [SerializeField] Transform distanceslashPos;
-    [SerializeField] GameObject distanceSlashPrefab;
-
+    private bool isFacingRight = true;
 
     float keyHorizontal;
     bool keyJump;
     bool keySlash;
     bool keyDistanceslash;
-    //bool keyDash;
-    bool isSlashing;
-    
-    //start se llama antes del primer frame update
+    bool keyDash;
 
     void Start()
     {
         animator = GetComponent<Animator>();
         box2d = GetComponent<BoxCollider2D>();
         rb2d = GetComponent<Rigidbody2D>();
-
-        //El sprite mira a la derecha por default
-        isFacingRigth = true;
     }
-    
-    
-    private void FixedUpdate()
+
+    void Update()
     {
-        isGrounded = false;
-        Color raycastColor;
-        RaycastHit2D raycastHit;
-        float raycastDistance = 0.05f;
-        int layerMask = 1 << LayerMask.NameToLayer("Ground");
-        
-        //Ground Check
-        Vector2 box_origin = box2d.bounds.center;
-        box_origin.y = box2d.bounds.min.y + (box2d.bounds.extents.y / 4f);
-        Vector2 box_size = box2d.bounds.size;
-        box_size.y = box2d.bounds.size.y / 4f;
-        raycastHit = Physics2D.BoxCast(box_origin, box_size, 0f, Vector2.down, raycastDistance, layerMask);
-        // player boxcolliding with ground layer
-        if (raycastHit.collider != null)
+        keyHorizontal = Input.GetAxisRaw("Horizontal");
+        keyJump = Input.GetButtonDown("Jump");
+        keySlash = Input.GetKeyDown(KeyCode.C);
+        keyDistanceslash = Input.GetKeyDown(KeyCode.V);
+        keyDash = Input.GetKeyDown(KeyCode.LeftShift);
+
+        GroundCheck();
+        WallCheck();
+
+        // --- MOVIMIENTO HORIZONTAL ---
+        if (!isDashing)
+            rb2d.velocity = new Vector2(keyHorizontal * moveSpeed, rb2d.velocity.y);
+
+        if (keyHorizontal > 0 && !isFacingRight) Flip();
+        else if (keyHorizontal < 0 && isFacingRight) Flip();
+
+        // Animaciones de caminar / idle
+        if (Mathf.Abs(keyHorizontal) > 0.1f && isGrounded)
         {
-            isGrounded = true;
+            if (keySlash)
+                animator.Play("Player runslash");
+            else
+                animator.Play("Player run");
+        }
+        else if (isGrounded)
+        {
+            animator.Play("Player idle");
         }
 
-        // draw debug lines
-
-        raycastColor = (isGrounded) ? Color.green : Color.red;
-        Debug.DrawRay(box_origin + new Vector2(box2d.bounds.extents.x, 0), Vector2.down * (box2d.bounds.extents.y / 4f + raycastDistance), raycastColor);
-        Debug.DrawRay(box_origin - new Vector2(box2d.bounds.extents.x, 0), Vector2.down * (box2d.bounds.extents.y / 4f + raycastDistance), raycastColor);
-        Debug.DrawRay(box_origin - new Vector2(box2d.bounds.extents.x, box2d.bounds.extents.y / 4f + raycastDistance), Vector2.right * (box2d.bounds.extents.x * 2), raycastColor);
-    }
-
-    //Update se da una vez por cuadro 
-
-    void PlayerJumpinput()
-    {
-        
-    }
-
-    void PlayerDistanceslashinput()
-    {
-        float distanceslashTimeLength = 0;
-        float keyDistanceslashReleaseTime = 0;
-        //throw new NotImplementedException();
-
-        //get keyboard input
-        keyDistanceslash = Input.GetKey(KeyCode.V);
-
-        //Shoot key is being pressed and key release flag true 
-
-        //if (keyDistanceslash && keyDistanceslashReleaseTime)
-        //{
-        //    isDistanceslashing = true;
-        //    keyDistanceslashRelease = false;
-        //    distanceslashTime = Time.time;
-
-        //    //shot distanceslash
-        //    Debug.Log("distance slash fly");
-        //}
-
-        //shoot key isn't being pressed and release flag is false 
-    }
-
-  
-    void Update() // Se ejecuta cada frame
-    {
-        PlayerJumpinput();
-        PlayerDistanceslashinput();
-
-        keyHorizontal = Input.GetAxisRaw("Horizontal"); // keyHorizontal esta revisando si estas presionando la A o la D, y segun la que presiones te da un 1 o un -1
-        keyJump = Input.GetKeyDown(KeyCode.Space);
-       // keyDash = Input.GetKeyDown(KeyCode.Q);
-        keySlash = Input.GetKeyDown(KeyCode.C); // keySlash es verdadero si se presiona la tecla C
-        isSlashing = keySlash;
-
-        
-
-        if(keyHorizontal < 0) // Si se presiona la tecla izquierda A o la flecha izquierda
-        { // keyHorizontal = -1
-            if (isFacingRigth)
+        // --- SALTO ---
+        if (keyJump)
+        {
+            if (isGrounded)
             {
-                Flip();
+                Jump();
+                jumpCount = 1;
             }
-            if(isGrounded) // Y si estas en el suelo
+            else if (jumpCount < maxJumps)
             {
-                
-                
-                if (isSlashing) // Y si estas atacando
-                {
-                    animator.Play("Player runslash");
-                }
-                
+                Jump();
+                jumpCount++;
             }
-          
-            rb2d.velocity = new Vector2(-movespeed, rb2d.velocity.y);
+            else if (isWallSliding)
+            {
+                WallJump();
+            }
         }
-        else if (keyHorizontal > 0) // Si estas caminando a la derecha, presionando la tecla D o la flecha derecha
-        { // keyHorizontal = 1
-            if (!isFacingRigth)
-            {
-                Flip();
-            }
-            if (isGrounded) // Y estas en el suelo
-            {
 
-                if (isSlashing) // Y si estas atacando
-                {
-                    animator.Play("Player runslash");
-                }
-               
+        // --- DASH ---
+        if (keyDash && Time.time >= lastDashTime + dashCooldown)
+        {
+            StartCoroutine(Dash());
+        }
 
-            }
-                        
-            rb2d.velocity = new Vector2(movespeed, rb2d.velocity.y);
+        // --- ATAQUE MELEE ---
+        if (keySlash && isGrounded && Mathf.Abs(keyHorizontal) < 0.1f)
+        {
+            animator.Play("Player slash");
+            AttackMelee();
+        }
+
+        // --- ATAQUE A DISTANCIA ---
+        if (keyDistanceslash)
+        {
+            animator.Play("Player slash"); // O crea "Player distanceslash" si la tienes
+            ShootDistanceSlash();
+        }
+
+        // --- WALL SLIDE ---
+        if (isTouchingWall && !isGrounded && keyHorizontal != 0)
+        {
+            isWallSliding = true;
+            rb2d.velocity = new Vector2(rb2d.velocity.x, -wallSlideSpeed);
+            // Aquí podrías poner animación de pared si la tienes
         }
         else
         {
-            if (isGrounded) // Si estas en el suelo
-            {
-                if (isSlashing) // Y presionas la tecla C
-                {
-                    animator.Play("Player slash"); // Animacion de ataque
-                    Debug.Log("Slash");
-                }
-            }
- 
-            
-            rb2d.velocity = new Vector2(0f, rb2d.velocity.y);
-        }
-        
-        
-        if(isGrounded) // Si estoy en el suelo
-            animator.SetInteger("Running",(int)keyHorizontal); // Animacion de correr
-
-        if (keyJump && isGrounded) // Si presionas la tecla de salto y estas en el suelo
-        {
-            if (isSlashing) // Si esta atacando
-            {
-                animator.Play("Player jumpslash"); // Animacion de ataque en el aire
-            }
-            else // Si no
-            {
-                animator.Play("Player jump"); // Animacion de ataque normal
-            }
-
-            rb2d.velocity = new Vector2(rb2d.velocity.x, jumpSpeed); // Esta linea te mueve la velocidad en y segun el jumpSpeed
+            isWallSliding = false;
         }
 
-        if (!isGrounded) // Si no estas en el suelo
+        // --- ANIMACIONES EN AIRE ---
+        if (!isGrounded)
         {
-            if (isSlashing)
-            {
+            if (keySlash)
                 animator.Play("Player jumpslash");
-            }
             else
-            {
-              animator.Play("Player jump");
-
-            }
+                animator.Play("Player jump");
         }
-
     }
+
+    void GroundCheck()
+    {
+        Vector2 origin = box2d.bounds.center;
+        Vector2 size = box2d.bounds.size;
+        isGrounded = Physics2D.OverlapBox(origin, new Vector2(size.x * 0.9f, 0.1f), 0f, LayerMask.GetMask("Ground"));
+        if (isGrounded) jumpCount = 0;
+    }
+
+    void WallCheck()
+    {
+        Vector2 direction = isFacingRight ? Vector2.right : Vector2.left;
+        isTouchingWall = Physics2D.Raycast(transform.position, direction, 0.6f, wallLayer);
+    }
+
+    void Jump()
+    {
+        rb2d.velocity = new Vector2(rb2d.velocity.x, jumpSpeed);
+        animator.Play("Player jump");
+    }
+
+    void WallJump()
+    {
+        Vector2 direction = isFacingRight ? Vector2.left : Vector2.right;
+        rb2d.velocity = new Vector2(direction.x * moveSpeed, wallJumpForce);
+        Flip();
+        animator.Play("Player jump");
+    }
+
+    IEnumerator Dash()
+    {
+        isDashing = true;
+        lastDashTime = Time.time;
+        animator.Play("Player dash");
+
+        float direction = isFacingRight ? 1f : -1f;
+        rb2d.velocity = new Vector2(direction * dashSpeed, 0f);
+
+        yield return new WaitForSeconds(dashDuration);
+        isDashing = false;
+    }
+
+    void AttackMelee()
+    {
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(swordHitbox.position, swordRange, enemyLayers);
+        foreach (Collider2D enemy in hitEnemies)
+        {
+            Debug.Log("Golpeaste a " + enemy.name);
+            enemy.GetComponent<ZigZagEnemy>()?.TakeHit((enemy.transform.position - transform.position).normalized);
+        }
+    }
+
+    void ShootDistanceSlash()
+    {
+        GameObject slash = Instantiate(distanceSlashPrefab, distanceSlashPos.position, distanceSlashPos.rotation);
+        Rigidbody2D slashRb = slash.GetComponent<Rigidbody2D>();
+        float direction = isFacingRight ? 1f : -1f;
+        slashRb.velocity = new Vector2(direction * distanceSlashSpeed, 0f);
+    }
+
     void Flip()
     {
-        isFacingRigth = !isFacingRigth;
+        isFacingRight = !isFacingRight;
         transform.Rotate(0f, 180f, 0f);
     }
+
+    void OnDrawGizmosSelected()
+    {
+        if (swordHitbox != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(swordHitbox.position, swordRange);
+        }
+    }
 }
+

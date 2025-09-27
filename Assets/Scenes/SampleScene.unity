@@ -908,11 +908,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 972484169906133797, guid: 6456e8e7696162e4b9ea913b12f76a4a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.7426
+      value: 4.38
       objectReference: {fileID: 0}
     - target: {fileID: 972484169906133797, guid: 6456e8e7696162e4b9ea913b12f76a4a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.3015
+      value: -0.13
       objectReference: {fileID: 0}
     - target: {fileID: 972484169906133797, guid: 6456e8e7696162e4b9ea913b12f76a4a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -950,6 +950,18 @@ PrefabInstance:
       propertyPath: target
       value: 
       objectReference: {fileID: 1983988138}
+    - target: {fileID: 2422222116836239883, guid: 6456e8e7696162e4b9ea913b12f76a4a, type: 3}
+      propertyPath: attackPushback
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2422222116836239883, guid: 6456e8e7696162e4b9ea913b12f76a4a, type: 3}
+      propertyPath: knockbackForce
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2422222116836239883, guid: 6456e8e7696162e4b9ea913b12f76a4a, type: 3}
+      propertyPath: detectionRadius
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3383851615130680918, guid: 6456e8e7696162e4b9ea913b12f76a4a, type: 3}
       propertyPath: m_Name
       value: Circle
@@ -961,6 +973,10 @@ PrefabInstance:
     - target: {fileID: 4061967681814845190, guid: 6456e8e7696162e4b9ea913b12f76a4a, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6819101795308414745, guid: 6456e8e7696162e4b9ea913b12f76a4a, type: 3}
+      propertyPath: m_Radius
+      value: 4.23
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

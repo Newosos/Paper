@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour
     private bool isTouchingWall;
     private bool isWallSliding;
 
-    private bool isGrounded;
+    public bool isGrounded;
     private bool isFacingRight = true;
 
     float keyHorizontal;
@@ -67,16 +67,20 @@ public class PlayerController : MonoBehaviour
         if (!isDashing)
             rb2d.velocity = new Vector2(keyHorizontal * moveSpeed, rb2d.velocity.y);
 
-        if (keyHorizontal > 0 && !isFacingRight) Flip();
+        if (keyHorizontal > 0 && !isFacingRight) Flip(); // 1
         else if (keyHorizontal < 0 && isFacingRight) Flip();
 
+        if (isGrounded) // Este if revisa que estes en el suelo, para que te modifique el valor running, el cual es un parametro de animacion
+        {
+            // Necesitamos que este valor se este configurando constantemente porque no solo revisa si te mueves, sino tambien si no lo haces, para regresar al idle
+            // puedes revisar tu animator para cersiorarte de esto
+            animator.SetInteger("Running",(int)keyHorizontal);
+        }
         // Animaciones de caminar / idle
         if (Mathf.Abs(keyHorizontal) > 0.1f && isGrounded)
         {
             if (keySlash)
                 animator.Play("Player runslash");
-            else
-                animator.Play("Player run");
         }
         else if (isGrounded)
         {
@@ -148,7 +152,8 @@ public class PlayerController : MonoBehaviour
     {
         Vector2 origin = box2d.bounds.center;
         Vector2 size = box2d.bounds.size;
-        isGrounded = Physics2D.OverlapBox(origin, new Vector2(size.x * 0.9f, 0.1f), 0f, LayerMask.GetMask("Ground"));
+        isGrounded = Physics2D.OverlapBox(origin - new Vector2(0, 0.15f), new Vector2(size.x * 0.9f, 0.1f), 0f, LayerMask.GetMask("Ground"));
+        // Aqui se le hizo una resta al origen para que el detector quede en los pies de el jugador
         if (isGrounded) jumpCount = 0;
     }
 

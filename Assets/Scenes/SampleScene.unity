@@ -1694,7 +1694,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 0
   m_CollisionDetection: 1
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &1983988135
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1846,13 +1846,13 @@ MonoBehaviour:
   dashSpeed: 12
   dashDuration: 0.2
   dashCooldown: 0.5
-  swordHitbox: {fileID: 0}
+  swordHitbox: {fileID: 1983988138}
   swordRange: 0.5
   enemyLayers:
     serializedVersion: 2
-    m_Bits: 0
-  distanceSlashPos: {fileID: 0}
-  distanceSlashPrefab: {fileID: 0}
+    m_Bits: 1024
+  distanceSlashPos: {fileID: 1983988138}
+  distanceSlashPrefab: {fileID: 3383851615130680918, guid: 6456e8e7696162e4b9ea913b12f76a4a, type: 3}
   distanceSlashSpeed: 5
   wallSlideSpeed: 1.5
   wallJumpForce: 8
@@ -1928,6 +1928,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: globozig
       objectReference: {fileID: 0}
+    - target: {fileID: 3383851615130680918, guid: 6456e8e7696162e4b9ea913b12f76a4a, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 4061967681814845190, guid: 6456e8e7696162e4b9ea913b12f76a4a, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -1935,6 +1939,14 @@ PrefabInstance:
     - target: {fileID: 4061967681814845190, guid: 6456e8e7696162e4b9ea913b12f76a4a, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5265163813237581908, guid: 6456e8e7696162e4b9ea913b12f76a4a, type: 3}
+      propertyPath: m_Constraints
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5265163813237581908, guid: 6456e8e7696162e4b9ea913b12f76a4a, type: 3}
+      propertyPath: m_ExcludeLayers.m_Bits
+      value: 1024
       objectReference: {fileID: 0}
     - target: {fileID: 6819101795308414745, guid: 6456e8e7696162e4b9ea913b12f76a4a, type: 3}
       propertyPath: m_Radius

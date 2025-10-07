@@ -76,15 +76,11 @@ public class PlayerController : MonoBehaviour
             // puedes revisar tu animator para cersiorarte de esto
             animator.SetInteger("Running",(int)keyHorizontal);
         }
-        // Animaciones de caminar / idle
-        if (Mathf.Abs(keyHorizontal) > 0.1f && isGrounded)
+
+        if (Mathf.Abs(keyHorizontal) > 0.1f && isGrounded) // Si te estas moviendo y estas en el suelo
         {
             if (keySlash)
                 animator.Play("Player runslash");
-        }
-        else if (isGrounded)
-        {
-            animator.Play("Player idle");
         }
 
         // --- SALTO ---
